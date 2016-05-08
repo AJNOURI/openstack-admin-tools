@@ -23,15 +23,14 @@ osservices=(\
  openstack-cinder-scheduler\
  )
 
-for i in "${osservices[@]}"
-do 
-  REZ=$(systemctl is-enabled $i.service 2>&-)
-  if [[ $REZ == "enabled" ]];then
-    printf "$i ==> ${GREEN}${GREEN}OK${NC}\n" 
+for i in "${osservices[@]}"                                                        
+do                                                                                 
+ EN=$(systemctl is-enabled $i.service 2>&-)
+ AC=$(systemctl is-active $i.service 2>&-)
+ if [ $EN == "enabled" ] && [ $AC == "active" ]; then
+   printf "$i ==> ${GREEN}${EN} : ${AC}${NC} \n"                                  
   else
-  	printf "$i ==> ${RED}NOK${NC}\n" 
-  	#printf "$i ==> \x1b[5m NOK x1b[25m \n"
+   printf "$i ==> ${RED}${EN} : ${AC}${NC} \n"
   fi
-done
-
- 
+  #echo $REZ
+ done
